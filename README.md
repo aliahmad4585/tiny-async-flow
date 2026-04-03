@@ -1,4 +1,4 @@
-# flow-node
+# tiny-async-flow
 
 Tiny, promise-first workflow engine for Node.js. Declare async tasks, branch with conditions, emit events, and retry failures without pulling in a heavyweight BPMN engine.
 
