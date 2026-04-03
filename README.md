@@ -20,7 +20,7 @@ const { Flow } = require("tiny-async-flow");
 const flow = new Flow();
 
 flow.task("fetch", async () => fetchUser());
-flow.task("process", async (user) => enrich(user));
+flow.task("process", (user) => enrich(user));
 flow.task("ship", async (payload) => send(payload), {
   condition: (ctx) => ctx.get("process") && ctx.get("process").shouldSend === true
 });
@@ -93,6 +93,92 @@ flow.task("ship", doShip, {
 
 // Defaults (no retries, no condition, 50ms retry delay if retries provided)
 flow.task("process", doProcess);
+```
+
+## Complete example
+
+```js
+// example.js
+const { Flow } = require("tiny-async-flow");
+
+// Fake IO helpers
+const fetchUser = async () => ({ id: 1, active: true });
+const enrichUser = (user) => ({ ...user, shouldSend: user.active });
+const sendEmail = async (payload) => `sent:${payload.id}`;
+
+const flow = new Flow();
+
+// Lifecycle hooks
+flow.on("start", () => console.log("Flow started"));
+flow.on("finish", ({ context }) => console.log("Flow finished:", context.toJSON()));
+flow.on("task:start", ({ name, attempt }) => console.log(`→ ${name} (attempt ${attempt})`));
+flow.on("task:success", ({ name, result }) => console.log(`✔ ${name} =>`, result));
+flow.on("task:error", ({ name, error, remainingRetries }) =>
+  console.log(`✖ ${name}: ${error.message} (${remainingRetries} retries left)`)
+);
+flow.on("task:retry", ({ name, delayMs }) => console.log(`… retrying ${name} after ${delayMs}ms`));
+flow.on("task:skip", ({ name }) => console.log(`↷ skipped ${name}`));
+
+// Tasks
+flow.task("fetch", async () => fetchUser());
+
+flow.task("process", (user) => enrichUser(user));
+
+flow.task(
+  "ship",
+  async (payload) => sendEmail(payload),
+  {
+    condition: (ctx) => ctx.get("process")?.shouldSend === true,
+    retries: 2,
+    retryDelayMs: 100
+  }
+);
+
+// An intentionally flaky task to show retries
+flow.task(
+  "audit",
+  (() => {
+    let first = true;
+    return () => {
+      if (first) {
+        first = false;
+        throw new Error("temporary failure");
+      }
+      return "audit-ok";
+    };
+  })(),
+  { retries: 1, retryDelayMs: 50 }
+);
+
+// Start with seed data and run
+flow
+  .start({ initialContext: { seed: "hello" } })
+  .then((ctx) => console.log("Done. Last value:", ctx.last()))
+  .catch((err) => console.error("Flow failed:", err));
+```
+
+Run it:
+```bash
+npm install tiny-async-flow
+node example.js
+```
+
+Sample output:
+```
+Flow started
+→ fetch (attempt 1)
+✔ fetch => { id: 1, active: true }
+→ process (attempt 1)
+✔ process => { id: 1, active: true, shouldSend: true }
+→ ship (attempt 1)
+✔ ship => sent:1
+→ audit (attempt 1)
+✖ audit: temporary failure (0 retries left)
+… retrying audit after 50ms
+→ audit (attempt 2)
+✔ audit => audit-ok
+Flow finished: { fetch: { id: 1, active: true }, process: { id: 1, active: true, shouldSend: true }, ship: 'sent:1', audit: 'audit-ok', seed: 'hello' }
+Done. Last value: audit-ok
 ```
 
 ## Run tests
