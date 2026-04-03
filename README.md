@@ -2,7 +2,7 @@
 
 Tiny, promise-first workflow engine for Node.js. Declare async tasks, branch with conditions, emit events, and retry failures without pulling in a heavyweight BPMN engine.
 
-**Install:** `npm install @aliahmad/flow-node`
+**Install:** `npm install tiny-async-flow`
 
 ## Why
 
@@ -15,7 +15,7 @@ Tiny, promise-first workflow engine for Node.js. Declare async tasks, branch wit
 CommonJS:
 
 ```js
-const { Flow } = require("flow-node");
+const { Flow } = require("tiny-async-flow");
 
 const flow = new Flow();
 
@@ -31,7 +31,7 @@ flow.start();
 ESM:
 
 ```js
-import { Flow } from "flow-node";
+import { Flow } from "tiny-async-flow";
 
 const flow = new Flow();
 // same tasks as above...

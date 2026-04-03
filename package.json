@@ -1,41 +1,41 @@
 {
-  "name": "@aliahmad/flow-node",
-  "version": "0.1.4",
-  "description": "Tiny, promise-first workflow engine for Node.js",
-  "type": "commonjs",
-  "main": "src/index.js",
-  "files": [
-    "src"
-  ],
-  "exports": {
-    ".": {
-      "require": "./src/index.js",
-      "import": "./src/index.js"
+    "name": "tiny-async-flow",
+    "version": "0.1.1",
+    "description": "Tiny, promise-first workflow engine for Node.js",
+    "type": "commonjs",
+    "main": "src/index.js",
+    "files": [
+        "src"
+    ],
+    "exports": {
+        ".": {
+            "require": "./src/index.js",
+            "import": "./src/index.js"
+        }
+    },
+    "scripts": {
+        "test": "jest"
+    },
+    "keywords": [
+        "workflow",
+        "orchestration",
+        "async",
+        "promises",
+        "nodejs",
+        "lightweight"
+    ],
+    "author": "Ali Ahmad",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/aliahmad4585/tiny-async-flow.git"
+    },
+    "bugs": {
+        "url": "https://github.com/aliahmad4585/tiny-async-flow/issues"
+    },
+    "homepage": "https://github.com/aliahmad4585/tiny-async-flow#readme",
+    "dependencies": {},
+    "devDependencies": {
+        "jest": "^29.7.0"
     }
-  },
-  "scripts": {
-    "test": "jest"
-  },
-  "keywords": [
-    "workflow",
-    "orchestration",
-    "async",
-    "promises",
-    "nodejs",
-    "lightweight"
-  ],
-  "author": "Ali Ahmad",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/aliahmad4585/flow-node.git"
-  },
-  "bugs": {
-    "url": "https://github.com/aliahmad4585/flow-node/issues"
-  },
-  "homepage": "https://github.com/aliahmad4585/flow-node#readme",
-  "dependencies": {},
-  "devDependencies": {
-    "jest": "^29.7.0"
-  }
 }
