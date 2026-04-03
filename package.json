@@ -1,0 +1,42 @@
+{
+  "name": "flow-node",
+  "version": "0.1.0",
+  "description": "Tiny, promise-first workflow engine for Node.js",
+  "type": "commonjs",
+  "main": "src/index.js",
+  "files": [
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "require": "./src/index.js",
+      "import": "./src/index.js"
+    }
+  },
+  "scripts": {
+    "test": "jest",
+    "lint": "node -e \"console.log('lint not configured for JS build')\""
+  },
+  "keywords": [
+    "workflow",
+    "orchestration",
+    "async",
+    "promises",
+    "nodejs",
+    "lightweight"
+  ],
+  "author": "Ali Ahmad",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aliahmad4585/flow-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aliahmad4585/flow-node/issues"
+  },
+  "homepage": "https://github.com/aliahmad4585/flow-node#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
